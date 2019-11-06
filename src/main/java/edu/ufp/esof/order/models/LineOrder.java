@@ -1,7 +1,9 @@
 package edu.ufp.esof.order.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -15,12 +17,18 @@ public class LineOrder {
     private Long id;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private OrderItem order;
 
     private int quantity;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Product product;
 
 
+    public LineOrder(Product product, int quantity) {
+        this.setProduct(product);
+        this.setQuantity(quantity);
+    }
 }

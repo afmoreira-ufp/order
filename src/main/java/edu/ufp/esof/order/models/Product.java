@@ -1,7 +1,9 @@
 package edu.ufp.esof.order.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -18,12 +20,18 @@ public class Product {
 
     private float price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Supplier supplier;
 
     public Product(String name,float price) {
         this.setName(name);
         this.setPrice(price);
+    }
+
+    public Product(String name) {
+        this.setName(name);
     }
 
     public String supplierName(){

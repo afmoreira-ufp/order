@@ -21,7 +21,7 @@ public class Client {
     private String address;
     private String phone;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client",cascade = CascadeType.PERSIST)
     private Set<OrderItem> orders=new HashSet<>();
 
     public Client(String name) {

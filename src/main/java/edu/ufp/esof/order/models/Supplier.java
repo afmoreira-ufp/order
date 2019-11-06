@@ -18,7 +18,7 @@ public class Supplier {
 
     private String name;
 
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(mappedBy = "supplier",cascade = CascadeType.PERSIST)
     private Set<Product> products=new HashSet<>();
 
     public Supplier(String name) {

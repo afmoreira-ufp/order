@@ -26,7 +26,7 @@ public class OrderItem {
     @EqualsAndHashCode.Exclude
     private Client client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",cascade = CascadeType.PERSIST)
     private Set<LineOrder> lineOrders=new HashSet<>();
 
     public OrderItem(){
