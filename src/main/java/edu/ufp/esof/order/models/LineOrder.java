@@ -1,5 +1,6 @@
 package edu.ufp.esof.order.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class LineOrder {
     @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private OrderItem order;
 
     private int quantity;

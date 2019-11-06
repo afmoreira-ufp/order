@@ -1,5 +1,7 @@
 package edu.ufp.esof.order.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,9 +26,11 @@ public class OrderItem {
     @ManyToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private Client client;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.PERSIST)
+    @JsonManagedReference
     private Set<LineOrder> lineOrders=new HashSet<>();
 
     public OrderItem(){

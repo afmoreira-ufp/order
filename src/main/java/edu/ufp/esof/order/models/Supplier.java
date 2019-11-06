@@ -1,5 +1,6 @@
 package edu.ufp.esof.order.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class Supplier {
     private String name;
 
     @OneToMany(mappedBy = "supplier",cascade = CascadeType.PERSIST)
+    @JsonManagedReference
     private Set<Product> products=new HashSet<>();
 
     public Supplier(String name) {
