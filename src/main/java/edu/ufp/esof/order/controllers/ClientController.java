@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,27 @@ public class ClientController {
         throw new NoClientExcpetion(id);
     }
 
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Client> createClient(@RequestBody Client client){
+        if(this.clientRepo.findByName(client.getName()).isPresent()){
+            throw new ClientAlreadyExistsExcpetion(client.getName());
+        }
+        return ResponseEntity.ok(this.clientRepo.save(client));
+    }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such client")
-    class NoClientExcpetion extends RuntimeException {
+    private class NoClientExcpetion extends RuntimeException {
 
         public NoClientExcpetion(Long id) {
             super("No such client with id: "+id);
+        }
+    }
+
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Client already exists")
+    private class ClientAlreadyExistsExcpetion extends RuntimeException {
+
+        public ClientAlreadyExistsExcpetion(String name) {
+            super("A client with name: "+name+" already exists");
         }
     }
 
