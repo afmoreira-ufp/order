@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -38,6 +39,16 @@ public class ClientController {
             return ResponseEntity.ok(optionalClient.get());
         }
         throw new NoClientExcpetion(id);
+    }
+
+    @GetMapping(value="/search",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Iterable<Client>> searchClients(@RequestParam Map<String,String> query){
+
+        System.out.println(query.get("id"));
+        System.out.println(query.get("name"));
+        System.out.println(query.get("attr1"));
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
