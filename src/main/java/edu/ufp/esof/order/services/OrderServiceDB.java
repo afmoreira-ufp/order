@@ -3,9 +3,13 @@ package edu.ufp.esof.order.services;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.repositories.OrderRepo;
 import edu.ufp.esof.order.services.filters.FilterObject;
+import edu.ufp.esof.order.services.filters.FilterOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,6 +19,8 @@ public class OrderServiceDB extends OrderServiceAbstraction {
 
     private OrderRepo orderRepo;
 
+
+    @Autowired
     public OrderServiceDB(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }
@@ -25,14 +31,20 @@ public class OrderServiceDB extends OrderServiceAbstraction {
     }
 
     @Override
-    public Iterable<OrderItem> findAll() {
-        return this.orderRepo.findAll();
+    public Set<OrderItem> findAll() {
+        Iterable<OrderItem> orderItems= this.orderRepo.findAll();
+
+        Set<OrderItem> orderSet=new HashSet<>();
+        for(OrderItem oi:orderItems){
+            orderSet.add(oi);
+        }
+
+        return orderSet;
     }
 
     @Override
     public Optional<OrderItem> findById(Long id) {
-        Optional<OrderItem> optionalOrder= this.orderRepo.findById(id);
-        return optionalOrder;
-    }
 
+        return this.orderRepo.findById(id);
+    }
 }

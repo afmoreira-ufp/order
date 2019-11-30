@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,8 +25,15 @@ public class OrderServiceInMemory extends OrderServiceAbstraction{
     }
 
     @Override
-    public Iterable<OrderItem> findAll() {
-        return this.orders;
+    public Set<OrderItem> findAll() {
+        Iterable<OrderItem> orderItems= this.orders;
+
+        Set<OrderItem> orderSet=new HashSet<>();
+        for(OrderItem oi:orderItems){
+            orderSet.add(oi);
+        }
+
+        return orderSet;
     }
 
     @Override
@@ -37,4 +45,5 @@ public class OrderServiceInMemory extends OrderServiceAbstraction{
         }
         return Optional.empty();
     }
+
 }

@@ -73,6 +73,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         this.clientRepo.save(client1);
 
-        loginService.addUser("client1","password");
+        //loginService.addUser("client1","password");
     }
 }
