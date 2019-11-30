@@ -3,7 +3,6 @@ package edu.ufp.esof.order.controllers;
 import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.repositories.ClientRepo;
-import edu.ufp.esof.order.services.OrderService;
 import edu.ufp.esof.order.services.OrderServiceAbstraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/order")
@@ -28,8 +29,13 @@ public class OrderController {
     private ClientRepo clientRepo;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<OrderItem>> getAllOrders() {
+    public ResponseEntity<Set<OrderItem>> getAllOrders() {
         return ResponseEntity.ok(this.orderService.findAll());
+    }
+
+    @GetMapping(value="/search",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<OrderItem>> searchOrders(@RequestParam Map<String,String> searchParams){
+        return ResponseEntity.ok(this.orderService.filterOrders(searchParams));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,7 +86,7 @@ public class OrderController {
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No order")
-    private class NoOrderExcpetion extends RuntimeException {
+    private static class NoOrderExcpetion extends RuntimeException {
         public NoOrderExcpetion(Long id) {
             super("No such order with id: "+id);
         }
