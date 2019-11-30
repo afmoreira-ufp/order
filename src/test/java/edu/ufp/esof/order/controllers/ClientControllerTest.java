@@ -2,10 +2,9 @@ package edu.ufp.esof.order.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ufp.esof.order.models.Client;
-import edu.ufp.esof.order.repositories.ClientRepo;
+import edu.ufp.esof.order.services.ClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -26,7 +25,7 @@ class ClientControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ClientRepo clientRepo;
+    private ClientService clientService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -37,6 +36,8 @@ class ClientControllerTest {
 
         String jsonRequest=this.objectMapper.writeValueAsString(client);
 
+        when(clientService.createClient(client)).thenReturn(Optional.of(client));
+
         this.mockMvc.perform(
                 post("/client").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
         ).andExpect(
@@ -46,7 +47,7 @@ class ClientControllerTest {
 
         Client existingClient=new Client("client2");
 
-        when(this.clientRepo.findByName("client2")).thenReturn(Optional.of(existingClient));
+        when(this.clientService.createClient(existingClient)).thenReturn(Optional.empty());
 
         String existingClientJson=this.objectMapper.writeValueAsString(existingClient);
 
@@ -67,7 +68,7 @@ class ClientControllerTest {
         Client client=new Client("client1");
         client.setId(1L);
 
-        when(this.clientRepo.findById(1L)).thenReturn(Optional.of(client));
+        when(this.clientService.findById(1L)).thenReturn(Optional.of(client));
 
         String responseJson=this.mockMvc.perform(
                 get("/client/1")

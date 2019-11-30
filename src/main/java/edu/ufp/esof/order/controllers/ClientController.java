@@ -1,7 +1,7 @@
 package edu.ufp.esof.order.controllers;
 
 import edu.ufp.esof.order.models.Client;
-import edu.ufp.esof.order.repositories.ClientRepo;
+import edu.ufp.esof.order.services.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +21,20 @@ public class ClientController {
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private ClientRepo clientRepo;
+    private ClientService clientService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Client>> getAllClients(){
         this.logger.info("Received a get request");
 
-        return ResponseEntity.ok(this.clientRepo.findAll());
+        return ResponseEntity.ok(this.clientService.findAll());
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public ResponseEntity<Client> getClientById(@PathVariable("id") Long id) throws NoClientExcpetion {
         this.logger.info("Received a get request");
 
-        Optional<Client> optionalClient=this.clientRepo.findById(id);
+        Optional<Client> optionalClient=this.clientService.findById(id);
         if(optionalClient.isPresent()) {
             return ResponseEntity.ok(optionalClient.get());
         }
@@ -53,10 +53,12 @@ public class ClientController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Client> createClient(@RequestBody Client client){
-        if(this.clientRepo.findByName(client.getName()).isPresent()){
-            throw new ClientAlreadyExistsExcpetion(client.getName());
+        Optional<Client> clientOptional=this.clientService.createClient(client);
+        if(clientOptional.isPresent()){
+            return ResponseEntity.ok(clientOptional.get());
         }
-        return ResponseEntity.ok(this.clientRepo.save(client));
+        throw new ClientAlreadyExistsExcpetion(client.getName());
+
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such client")

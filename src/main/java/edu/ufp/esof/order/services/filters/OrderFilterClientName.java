@@ -22,7 +22,8 @@ public class OrderFilterClientName implements FilterOrderI {
 
         Set<OrderItem> ordersToBeReturned=new HashSet<>();
         for(OrderItem oi:orders){
-            if(oi.getClient()!=null && oi.getClient().getName()!=null && oi.getClient().getName().equals(clientName)){
+            if(oi.getClient()!=null && oi.getClient().getName()!=null
+                    && oi.getClient().getName().equals(clientName)){
                 ordersToBeReturned.add(oi);
             }
         }

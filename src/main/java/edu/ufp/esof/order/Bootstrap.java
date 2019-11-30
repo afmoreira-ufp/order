@@ -3,6 +3,7 @@ package edu.ufp.esof.order;
 import edu.ufp.esof.order.models.*;
 import edu.ufp.esof.order.repositories.ClientRepo;
 import edu.ufp.esof.order.repositories.OrderRepo;
+import edu.ufp.esof.order.services.authentication.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private OrderRepo orderRepo;
 
+    @Autowired
+    private LoginService loginService;
+
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -29,6 +33,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         logger.info("Startup");
 
         Client client1=new Client("client1");
+        client1.setPassword("12345");
         OrderItem order1=new OrderItem("12345");
 
         Supplier supplier1=new Supplier("supplier1");
@@ -68,9 +73,6 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         this.clientRepo.save(client1);
 
-        System.out.println(this.clientRepo.count());
-        System.out.println(this.orderRepo.count());
-        System.out.println(this.orderRepo.findAll());
-
+        loginService.addUser("client1","password");
     }
 }
