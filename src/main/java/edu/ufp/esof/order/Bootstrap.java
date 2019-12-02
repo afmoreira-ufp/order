@@ -2,8 +2,6 @@ package edu.ufp.esof.order;
 
 import edu.ufp.esof.order.models.*;
 import edu.ufp.esof.order.repositories.ClientRepo;
-import edu.ufp.esof.order.repositories.OrderRepo;
-import edu.ufp.esof.order.services.authentication.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +15,13 @@ import javax.transaction.Transactional;
 @Transactional
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Autowired
+
     private ClientRepo clientRepo;
 
     @Autowired
-    private OrderRepo orderRepo;
-
-    @Autowired
-    private LoginService loginService;
+    public Bootstrap(ClientRepo clientRepo) {
+        this.clientRepo = clientRepo;
+    }
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 

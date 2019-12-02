@@ -36,8 +36,4 @@ public class Product {
         this.setName(name);
     }
 
-    public String supplierName(){
-        return this.supplier.getName();
-    }
-
 }

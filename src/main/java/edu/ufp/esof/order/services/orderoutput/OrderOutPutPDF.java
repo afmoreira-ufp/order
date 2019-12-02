@@ -15,13 +15,13 @@ import java.util.stream.Stream;
 
 public class OrderOutPutPDF implements OrderOutput {
     @Override
-    public byte[] outputFile(OrderItem order) {
+    public byte[] outputFile(OrderItem order,String type) {
         if(order==null){
             return null;
         }
         Document document = new Document();
         try {
-            String filename="order"+(order.getId()==null?"null":order.getId())+".pdf";
+            String filename="order"+(order.getId()==null?"null":order.getId())+type;
             PdfWriter.getInstance(document, new FileOutputStream(filename));
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);

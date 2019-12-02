@@ -3,7 +3,6 @@ package edu.ufp.esof.order.services.filters;
 import edu.ufp.esof.order.models.OrderItem;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 

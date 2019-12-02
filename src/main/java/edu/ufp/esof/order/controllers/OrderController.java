@@ -55,7 +55,7 @@ public class OrderController {
     }
 
     @GetMapping(value="/{format}/{id}", produces = {OrderController.WORD_MIME_TYPE,MediaType.ALL_VALUE} )
-    public ResponseEntity<byte[]> getPDF(
+    public ResponseEntity<byte[]> getFile(
             @RequestHeader(value="Authorization") String token,
             @PathVariable Long id, @PathVariable String format) {
 
@@ -65,29 +65,21 @@ public class OrderController {
         }
         OrderItem order=optionalOrderItem.get();
 
-        if(format.equalsIgnoreCase("pdf")) {
+        byte[] fileStream = this.orderService.outputFile(order,format);
+        String filename = "order" + order.getId() +"." +format;
+        HttpHeaders headers=getHeaders(format,filename);
+        return new ResponseEntity<>(fileStream, headers, HttpStatus.OK);
+    }
 
-            this.orderService.setOutputPDF();
-            byte[] fileStream = this.orderService.outputFile(order);
-
-            HttpHeaders headers = new HttpHeaders();
+    private HttpHeaders getHeaders(String type,String filename){
+        HttpHeaders headers = new HttpHeaders();
+        if(type.equalsIgnoreCase("pdf")) {
             headers.setContentType(MediaType.APPLICATION_PDF);
-
-            String filename = "order" + order.getId() + ".pdf";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            return new ResponseEntity<>(fileStream, headers, HttpStatus.OK);
+        }else{
+            headers.setContentType(MediaType.valueOf(WORD_MIME_TYPE));
         }
-        else{
-            this.orderService.setOutputDocx();
-            byte[] fileStream=this.orderService.outputFile(order);
-
-            HttpHeaders headers = new HttpHeaders();
-            String filename = "order"+order.getId()+".docx";
-            headers.setContentDispositionFormData(filename, filename);
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            return new ResponseEntity<>(fileStream, headers, HttpStatus.OK);
-        }
+        headers.setContentDispositionFormData(filename, filename);
+        return headers;
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No order")

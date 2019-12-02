@@ -13,9 +13,7 @@ import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 
 public class OrderOutputDocx implements OrderOutput {
@@ -30,7 +28,7 @@ public class OrderOutputDocx implements OrderOutput {
 
     private ObjectFactory factory = Context.getWmlObjectFactory();
     @Override
-    public byte[] outputFile (OrderItem order) {
+    public byte[] outputFile (OrderItem order,String type) {
         MainDocumentPart mainDocumentPart = this.wordMLPackage.getMainDocumentPart();
         mainDocumentPart.addStyledParagraphOfText("Title", "Order Details");
         mainDocumentPart.addParagraphOfText("Client: "+order.getClient().getName()+" Address: "+order.getClient().getAddress());
@@ -44,7 +42,7 @@ public class OrderOutputDocx implements OrderOutput {
         mainDocumentPart.addParagraphOfText("Total: "+order.price());
 
         try {
-            File file=new File("order"+(order.getId()==null?"null":order.getId())+".docx");
+            File file=new File("order"+(order.getId()==null?"null":order.getId())+type);
             wordMLPackage.save(file);
             byte[] toReturn=Files.readAllBytes(file.toPath());
             Files.delete(file.toPath());

@@ -18,25 +18,35 @@ import java.util.Set;
 
 @Service
 public abstract class OrderServiceAbstraction implements OrderService,OrderOutput{
+
     @Getter
     @Setter
     private OrderOutput orderOutput;
 
-    @Autowired
-    protected FilterOrderService filterOrderService;
-
-    @Autowired
+    private FilterOrderService filterOrderService;
     private LoginService loginService;
 
-    public byte[] outputFile(OrderItem order){
-        return orderOutput.outputFile(order);
+    @Autowired
+    public OrderServiceAbstraction(FilterOrderService filterOrderService, LoginService loginService) {
+        this.filterOrderService = filterOrderService;
+        this.loginService = loginService;
     }
+
+    public byte[] outputFile(OrderItem order, String type){
+        if(type.equalsIgnoreCase("pdf")){
+            this.setOutputPDF();
+        }else{
+            this.setOutputDoc();
+        }
+        return this.orderOutput.outputFile(order,type);
+    }
+
 
     public void setOutputPDF(){
         this.orderOutput=new OrderOutPutPDF();
     }
 
-    public void setOutputDocx(){
+    public void setOutputDoc(){
         this.orderOutput=new OrderOutputDocx();
     }
 

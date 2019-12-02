@@ -2,7 +2,6 @@ package edu.ufp.esof.order.services.authentication;
 
 import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.services.ClientService;
-import edu.ufp.esof.order.services.authentication.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,15 @@ public class LoginService {
 
     private Map<String,String> users=new HashMap<>();
 
-    @Autowired
+
     private ClientService clientService;
 
-    public void addUser(String username,String password){
+    @Autowired
+    public LoginService(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    public void addUser(String username, String password){
 
         this.users.put(username,password);
     }

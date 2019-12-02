@@ -12,9 +12,13 @@ import java.util.Optional;
 @Service
 public class ClientService {
 
-    @Autowired
+
     private ClientRepo clientRepo;
 
+    @Autowired
+    public ClientService(ClientRepo clientRepo) {
+        this.clientRepo=clientRepo;
+    }
 
     public Iterable<Client> findAll() {
         return this.clientRepo.findAll();
