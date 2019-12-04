@@ -1,4 +1,4 @@
-package edu.ufp.esof.order.services.filters;
+package edu.ufp.esof.order.services.filters.order;
 
 import lombok.Data;
 import org.slf4j.Logger;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 @Data
-public class FilterObject {
+public class FilterOrderObject {
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -21,17 +21,17 @@ public class FilterObject {
     private String productName;
     private String clientName;
 
-    public FilterObject(String clientName,String productName, LocalDate startDate, LocalDate endDate) {
+    public FilterOrderObject(String clientName, String productName, LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.productName = productName;
         this.clientName = clientName;
     }
 
-    public FilterObject() {
+    public FilterOrderObject() {
     }
 
-    public FilterObject(Map<String, String> searchParams) {
+    public FilterOrderObject(Map<String, String> searchParams) {
         this();
         this.productName=searchParams.get("product");
         this.clientName=searchParams.get("client");

@@ -3,7 +3,7 @@ package edu.ufp.esof.order.services;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.repositories.OrderRepo;
 import edu.ufp.esof.order.services.authentication.LoginService;
-import edu.ufp.esof.order.services.filters.FilterOrderService;
+import edu.ufp.esof.order.services.filters.order.FilterOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

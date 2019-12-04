@@ -4,6 +4,8 @@ import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.models.LineOrder;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.models.Product;
+import edu.ufp.esof.order.services.filters.order.FilterOrderObject;
+import edu.ufp.esof.order.services.filters.order.FilterOrderService;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -49,9 +51,9 @@ class FilterOrderServiceTest {
         orders.add(orderItem4);
 
 
-        FilterObject filterObject=new FilterObject(clientName,productName, LocalDate.now().minusDays(1),LocalDate.now().plusDays(1));
+        FilterOrderObject filterOrderObject =new FilterOrderObject(clientName,productName, LocalDate.now().minusDays(1),LocalDate.now().plusDays(1));
         FilterOrderService filterOrderService=new FilterOrderService();
-        assertEquals(1,filterOrderService.filter(orders,filterObject).size());
+        assertEquals(1,filterOrderService.filter(orders, filterOrderObject).size());
 
     }
 }

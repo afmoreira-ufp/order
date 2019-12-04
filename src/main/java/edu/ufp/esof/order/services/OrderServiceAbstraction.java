@@ -2,8 +2,8 @@ package edu.ufp.esof.order.services;
 
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.services.authentication.LoginService;
-import edu.ufp.esof.order.services.filters.FilterObject;
-import edu.ufp.esof.order.services.filters.FilterOrderService;
+import edu.ufp.esof.order.services.filters.order.FilterOrderObject;
+import edu.ufp.esof.order.services.filters.order.FilterOrderService;
 import edu.ufp.esof.order.services.orderoutput.OrderOutPutPDF;
 import edu.ufp.esof.order.services.orderoutput.OrderOutput;
 import edu.ufp.esof.order.services.orderoutput.OrderOutputDocx;
@@ -53,10 +53,10 @@ public abstract class OrderServiceAbstraction implements OrderService,OrderOutpu
 
     public Set<OrderItem> filterOrders(Map<String, String> searchParams) {
 
-        FilterObject filterObject=new FilterObject(searchParams);
+        FilterOrderObject filterOrderObject =new FilterOrderObject(searchParams);
         Set<OrderItem> orderItems=this.findAll();
 
-        return this.filterOrderService.filter(orderItems,filterObject);
+        return this.filterOrderService.filter(orderItems, filterOrderObject);
     }
 
     public Optional<OrderItem> accessOrder(Long id, String token){

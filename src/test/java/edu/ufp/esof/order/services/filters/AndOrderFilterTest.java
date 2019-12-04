@@ -4,6 +4,8 @@ import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.models.LineOrder;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.models.Product;
+import edu.ufp.esof.order.services.filters.order.OrderFilterClientName;
+import edu.ufp.esof.order.services.filters.order.OrderFilterProductName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -11,7 +13,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AndOrderFilterOrderTest {
+class AndOrderFilterTest {
 
     @Test
     void filter() {
@@ -49,12 +51,12 @@ class AndOrderFilterOrderTest {
 
         OrderFilterProductName orderFilterProductName= new OrderFilterProductName(productName);
         OrderFilterClientName orderFilterClientName= new OrderFilterClientName(clientName);
-        AndOrderFilterOrder andOrderFilterOrder=new AndOrderFilterOrder(orderFilterProductName,orderFilterClientName);
-        assertEquals(1,andOrderFilterOrder.filter(orders).size());
+        AndFilter andOrderFilter =new AndFilter(orderFilterProductName,orderFilterClientName);
+        assertEquals(1, andOrderFilter.filter(orders).size());
 
         orderFilterClientName= new OrderFilterClientName("non existing client");
-        andOrderFilterOrder=new AndOrderFilterOrder(orderFilterProductName,orderFilterClientName);
-        assertEquals(0,andOrderFilterOrder.filter(orders).size());
+        andOrderFilter =new AndFilter(orderFilterProductName,orderFilterClientName);
+        assertEquals(0, andOrderFilter.filter(orders).size());
 
 
     }

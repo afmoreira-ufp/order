@@ -3,6 +3,7 @@ package edu.ufp.esof.order.services.filters;
 import edu.ufp.esof.order.models.LineOrder;
 import edu.ufp.esof.order.models.OrderItem;
 import edu.ufp.esof.order.models.Product;
+import edu.ufp.esof.order.services.filters.order.OrderFilterProductName;
 import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;

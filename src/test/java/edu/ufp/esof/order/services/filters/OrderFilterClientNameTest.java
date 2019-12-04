@@ -2,6 +2,7 @@ package edu.ufp.esof.order.services.filters;
 
 import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.models.OrderItem;
+import edu.ufp.esof.order.services.filters.order.OrderFilterClientName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

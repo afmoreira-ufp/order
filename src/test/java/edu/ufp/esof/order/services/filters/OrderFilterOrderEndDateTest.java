@@ -1,6 +1,7 @@
 package edu.ufp.esof.order.services.filters;
 
 import edu.ufp.esof.order.models.OrderItem;
+import edu.ufp.esof.order.services.filters.order.OrderFilterEndDate;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -28,13 +29,13 @@ class OrderFilterOrderEndDateTest {
         orders.add(orderItem3);
         orders.add(orderItem4);
 
-        OrderFilterOrderEndDate orderFilterOrderEndDate=new OrderFilterOrderEndDate(LocalDate.now().plusDays(1));
+        OrderFilterEndDate orderFilterOrderEndDate=new OrderFilterEndDate(LocalDate.now().plusDays(1));
         assertEquals(3,orderFilterOrderEndDate.filter(orders).size());
 
-        orderFilterOrderEndDate= new OrderFilterOrderEndDate(LocalDate.now().minusDays(1));
+        orderFilterOrderEndDate= new OrderFilterEndDate(LocalDate.now().minusDays(1));
         assertEquals(0,orderFilterOrderEndDate.filter(orders).size());
 
-        orderFilterOrderEndDate= new OrderFilterOrderEndDate(null);
+        orderFilterOrderEndDate= new OrderFilterEndDate(null);
         assertEquals(4,orderFilterOrderEndDate.filter(orders).size());
 
     }

@@ -41,6 +41,14 @@ public class OrderItem {
         this.orderNumber=orderNumber;
     }
 
+    public OrderItem(Long id, String orderNumber, LocalDate orderDate, Client client, Set<LineOrder> lineOrders) {
+        this.setId(id);
+        this.setOrderNumber(orderNumber);
+        this.setOrderDate(orderDate);
+        this.setClient(client);
+        this.setLineOrders(lineOrders);
+    }
+
     public void addLineOrder(LineOrder lineOrder){
         this.lineOrders.add(lineOrder);
         lineOrder.setOrder(this);
