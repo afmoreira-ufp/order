@@ -1,6 +1,7 @@
 package edu.ufp.esof.order;
 
 import edu.ufp.esof.order.models.*;
+import edu.ufp.esof.order.models.builders.OrderBuilder;
 import edu.ufp.esof.order.repositories.ClientRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         Client client1=new Client("client1");
         client1.setPassword("12345");
-        OrderItem order1=new OrderItem("12345");
+
 
         Supplier supplier1=new Supplier("supplier1");
         Supplier supplier2=new Supplier("supplier2");
@@ -44,32 +45,31 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         supplier1.addProduct(product2);
         supplier2.addProduct(product3);
         LineOrder l1o1=new LineOrder(product1,1);
-        order1.addLineOrder(l1o1);
         LineOrder l2o1=new LineOrder(product2,2);
-        order1.addLineOrder(l2o1);
 
-
-        OrderItem order2=new OrderItem("12346");
+        OrderItem order1=new OrderBuilder().setOrderNumber("12345")
+                .addLineOrder(l1o1)
+                .addLineOrder(l2o1).build();
 
         LineOrder l1o2=new LineOrder(product1,1);
-        order2.addLineOrder(l1o2);
         LineOrder l2o2=new LineOrder(product3,2);
-        order2.addLineOrder(l2o2);
 
+        OrderItem order2=new OrderBuilder().setOrderNumber("12346")
+                .addLineOrder(l1o2)
+                .addLineOrder(l2o2).build();
 
-        OrderItem order3=new OrderItem("12347");
 
         LineOrder l1o3=new LineOrder(product2,2);
-        order3.addLineOrder(l1o3);
         LineOrder l2o3=new LineOrder(product3,2);
-        order3.addLineOrder(l2o3);
+
+        OrderItem order3=new OrderBuilder().setOrderNumber("12347")
+                .addLineOrder(l1o3)
+                .addLineOrder(l2o3).build();
 
         client1.addOrder(order1);
         client1.addOrder(order2);
         client1.addOrder(order3);
 
         this.clientRepo.save(client1);
-
-        //loginService.addUser("client1","password");
     }
 }

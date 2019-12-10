@@ -6,9 +6,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface OrderService {
-    OrderItem save(OrderItem order);
+
 
     Set<OrderItem> findAll();
 
     Optional<OrderItem> findById(Long id);
+    Optional<OrderItem> createOrder(OrderItem order);
 }

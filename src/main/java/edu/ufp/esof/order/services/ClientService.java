@@ -47,7 +47,7 @@ public class ClientService {
         return Optional.of(createdClient);
     }
 
-    public Set<Client> filterOrders(Map<String, String> searchParams) {
+    public Set<Client> filterClients(Map<String, String> searchParams) {
 
         FilterClientObject filterClientObject =new FilterClientObject(searchParams);
         Set<Client> clients=this.findAll();

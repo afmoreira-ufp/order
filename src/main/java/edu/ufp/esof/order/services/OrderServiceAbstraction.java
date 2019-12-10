@@ -26,10 +26,13 @@ public abstract class OrderServiceAbstraction implements OrderService,OrderOutpu
     private FilterOrderService filterOrderService;
     private LoginService loginService;
 
+    protected ClientService clientService;
+
     @Autowired
-    public OrderServiceAbstraction(FilterOrderService filterOrderService, LoginService loginService) {
+    public OrderServiceAbstraction(FilterOrderService filterOrderService, LoginService loginService,ClientService clientService) {
         this.filterOrderService = filterOrderService;
         this.loginService = loginService;
+        this.clientService=clientService;
     }
 
     public byte[] outputFile(OrderItem order, String type){
@@ -69,4 +72,6 @@ public abstract class OrderServiceAbstraction implements OrderService,OrderOutpu
         }
         return Optional.empty();
     }
+
+    public abstract Optional<OrderItem> createOrder(OrderItem order);
 }

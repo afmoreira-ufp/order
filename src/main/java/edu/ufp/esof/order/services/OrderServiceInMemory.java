@@ -19,16 +19,13 @@ public class OrderServiceInMemory extends OrderServiceAbstraction{
     private static Long id_count;
 
     @Autowired
-    public OrderServiceInMemory(FilterOrderService filterOrderService, LoginService loginService) {
-        super(filterOrderService, loginService);
+    public OrderServiceInMemory(FilterOrderService filterOrderService, LoginService loginService,ClientService clientService) {
+        super(filterOrderService, loginService,clientService);
     }
 
-
     @Override
-    public OrderItem save(OrderItem order) {
-        order.setId(id_count++);
-        this.orders.add(order);
-        return order;
+    public Optional<OrderItem> createOrder(OrderItem order) {
+        return Optional.empty();
     }
 
     @Override

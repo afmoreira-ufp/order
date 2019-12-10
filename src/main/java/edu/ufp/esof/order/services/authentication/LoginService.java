@@ -16,7 +16,6 @@ public class LoginService {
 
     private Map<String,String> users=new HashMap<>();
 
-
     private ClientService clientService;
 
     @Autowired
@@ -41,13 +40,18 @@ public class LoginService {
     }
 
     public boolean authenticateUser(Client client ,String token){
-        return this.users.get(client.getName()).equals(token);
+        if(client!=null && client.getName()!=null) {
+            String cachedToken=this.users.get(client.getName());
+            if(cachedToken!=null) {
+                return cachedToken.equals(token);
+            }
+        }
+        return false;
     }
 
     public Optional<String> generateToken(String username, String password) {
         Optional<Client> optionalClient=this.isAuthenticated(username,password);
         if(optionalClient.isPresent()){
-
             try {
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
 

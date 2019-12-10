@@ -30,6 +30,9 @@ class OrderServiceDBTest {
     @MockBean
     private FilterOrderService filterOrderService;
 
+    @MockBean
+    private ClientService clientService;
+
     @Test
     void accessOrder() {
         Client client1=new Client();

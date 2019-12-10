@@ -1,10 +1,7 @@
 package edu.ufp.esof.order.controllers;
 
-import edu.ufp.esof.order.models.Client;
 import edu.ufp.esof.order.models.OrderItem;
-import edu.ufp.esof.order.repositories.ClientRepo;
 import edu.ufp.esof.order.services.OrderServiceAbstraction;
-import edu.ufp.esof.order.services.authentication.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,12 +20,12 @@ public class OrderController {
 
     private static final String WORD_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-    @Autowired
     private OrderServiceAbstraction orderService;
 
     @Autowired
-    private ClientRepo clientRepo;
-
+    public OrderController(OrderServiceAbstraction orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<OrderItem>> getAllOrders() {
@@ -42,16 +39,11 @@ public class OrderController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderItem> createOrder(@RequestBody OrderItem order) {
-        Client client = order.getClient();
-        Optional<Client> optionalClient=clientRepo.findByName(client.getName());
-        if (optionalClient.isEmpty()) {
-            client=clientRepo.save(client);
-        }else{
-            client=optionalClient.get();
+        Optional<OrderItem> orderItemOptional=orderService.createOrder(order);
+        if(orderItemOptional.isPresent()) {
+            return ResponseEntity.ok(orderItemOptional.get());
         }
-        order.setClient(client);
-
-        return ResponseEntity.ok(orderService.save(order));
+        throw new BadOrderExcpetion();
     }
 
     @GetMapping(value="/{format}/{id}", produces = {OrderController.WORD_MIME_TYPE,MediaType.ALL_VALUE} )
@@ -86,6 +78,13 @@ public class OrderController {
     private static class NoOrderExcpetion extends RuntimeException {
         public NoOrderExcpetion(Long id) {
             super("No such order with id: "+id);
+        }
+    }
+
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Cannot order")
+    private static class BadOrderExcpetion extends RuntimeException {
+        public BadOrderExcpetion() {
+            super("Cannot create order ");
         }
     }
 }

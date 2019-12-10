@@ -20,8 +20,12 @@ public class ClientController {
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
     private ClientService clientService;
+
+    @Autowired
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Client>> getAllClients(){
@@ -43,12 +47,7 @@ public class ClientController {
 
     @GetMapping(value="/search",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<Client>> searchClients(@RequestParam Map<String,String> query){
-
-        System.out.println(query.get("id"));
-        System.out.println(query.get("name"));
-        System.out.println(query.get("attr1"));
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.clientService.filterClients(query));
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +61,7 @@ public class ClientController {
     }
 
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="No such client")
-    private class NoClientExcpetion extends RuntimeException {
+    private static class NoClientExcpetion extends RuntimeException {
 
         public NoClientExcpetion(Long id) {
             super("No such client with id: "+id);
@@ -70,7 +69,7 @@ public class ClientController {
     }
 
     @ResponseStatus(value= HttpStatus.BAD_REQUEST, reason="Client already exists")
-    private class ClientAlreadyExistsExcpetion extends RuntimeException {
+    private static class ClientAlreadyExistsExcpetion extends RuntimeException {
 
         public ClientAlreadyExistsExcpetion(String name) {
             super("A client with name: "+name+" already exists");
