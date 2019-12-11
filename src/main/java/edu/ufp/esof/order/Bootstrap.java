@@ -28,7 +28,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        logger.info("Startup");
+        logger.debug("Startup");
 
         Client client1=new Client("client1");
         client1.setPassword("12345");
